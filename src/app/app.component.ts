@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {User } from './user';
+import {EnrollmentService} from './enrollment.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,12 +13,22 @@ export class AppComponent {
 
   userModel = new User('Rob', 'rob@test.com', 4384362837, 'default', "morning", true);
 
+    constructor(private _enrollmentService: EnrollmentService) {}
+
   validateTopic(value) {
     if(value === 'default') {
       this.topicHasError = true;
     } else {
       this.topicHasError = false;
     }
+  }
+
+  onSubmit() {
+    this._enrollmentService.enroll(this.userModel)
+      .subscribe(
+        data => console.log('Success!', data),
+        error => console.error('Error!', error)
+      )
   }
 
 }
