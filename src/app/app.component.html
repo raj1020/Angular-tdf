@@ -28,9 +28,7 @@
       <input type= "tel" #phone = "ngModel" pattern="^\d{10}$" required
       [class.is-invalid]="phone.invalid && phone.touched"
       class = "form-control" name = "phone" [(ngModel)] = "userModel.phone" />
-      <!-- <small class = "text-danger" 
-      [class.d-none]="phone.valid || phone.untouched">
-      Phone Number is required and must have 10 digits</small> -->
+      
       <div *ngIf = "phone.errors && (phone.invalid || phone.touched)">
         <small class = "text-danger" *ngIf="phone.errors.required">Phone Number is required</small>
         <small class = "text-danger" *ngIf="phone.errors.pattern">Phone Number must be 10 digits</small>
@@ -39,11 +37,14 @@
 
 
     <div class = "form-group">
-      <select class = "custom-select" name = "topic" [(ngModel)] = "userModel.topic">
-        <option value = "">I am interested in </option>
+      <select (blur)="validateTopic(topic.value)" (change)="validateTopic(topic.value)"  #topic ="ngModel" 
+        [class.is-invalid]="topicHasError && topic.touched" 
+        class = "custom-select" name = "topic" [(ngModel)] = "userModel.topic">
+        <option value = "default">I am interested in </option>
         <option *ngFor= "let topic of topics">{{topic}}</option>
 
       </select>
+      <small class = "text-danger" [class.d-none] = "!topicHasError || topic.untouched">Please choose a topic</small>
     </div>
 
     <div class = "mb-3">
